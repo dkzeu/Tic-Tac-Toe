@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const startGameBtn = document.getElementById('start-game');
     const cells = document.querySelectorAll('.cell');
-    const gameContainer = document.querySelector('.game-container');
-    const prompt = document.querySelector('.prompt');
     const resultContainer = document.querySelector('.result');
     const resultIcon = document.getElementById('result-icon');
     const resultText = document.getElementById('result-text');
@@ -19,8 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (choice === 'dagger' || choice === 'heart') {
             playerSymbol = choice;
             computerSymbol = playerSymbol === 'dagger' ? 'heart' : 'dagger';
-            prompt.classList.add('hidden');
-            gameContainer.classList.remove('hidden');
+            startGameBtn.textContent = `You chose ${playerSymbol.toUpperCase()}!`;
             resetBoard();
         } else {
             alert('Invalid choice! Please type "dagger" or "heart".');
@@ -31,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         board = ['', '', '', '', '', '', '', '', ''];
         cells.forEach(cell => {
             cell.textContent = '';
-            cell.addEventListener('click', handleClick);
+            cell.addEventListener('click', handleClick, { once: true });
         });
     }
 
