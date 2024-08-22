@@ -1,7 +1,7 @@
 body {
-    background-image: url('gladiator-pit.jpg.png'); /* Replace with actual image */
+    background-image: url('gladiator-pit.jpg.png'); /* Ensure this image exists */
     background-size: cover;
-    font-family: 'MedievalSharp', cursive; /* Use a medieval-style font */
+    font-family: 'MedievalSharp', cursive; /* Make sure the font is correctly linked if used */
     color: white;
     text-align: center;
 }
