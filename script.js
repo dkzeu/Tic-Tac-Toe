@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let board = ['', '', '', '', '', '', '', '', ''];
     let currentPlayer = 'player';
 
+    // Show the game container from the start
+    document.querySelector('.game-container').classList.remove('hidden');
+
     startGameBtn.addEventListener('click', startGame);
 
     function startGame() {
