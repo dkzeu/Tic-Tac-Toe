@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tic Tac Toe Wars</title>
+    <style>
+        body {
+            background-image: url('gladiator-pit.jpg'); /* Replace with actual image */
+            background-size: cover;
+            font-family: 'MedievalSharp', cursive; /* Use a medieval-style font */
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin: 0.5em 0;
+        }
+        .title {
+            line-height: 1.2em;
+        }
+        .game-container {
+            margin: 0 auto;
+            width: 300px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin: -4px;
+            font-size: 2em;
+            text-align: center;
+            line-height: 100px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .hidden {
+            display: none;
+        }
+        .prompt, .result {
+            margin-top: 20px;
+        }
+        .result img {
+            width: 50px;
+            vertical-align: middle;
+        }
+        .result span {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">THE<br>TIC TAC TOE<br>WARS</h1>
+    
+    <div class="game-container hidden">
+        <div id="cell-0" class="cell"></div>
+        <div id="cell-1" class="cell"></div>
+        <div id="cell-2" class="cell"></div>
+        <div id="cell-3" class="cell"></div>
+        <div id="cell-4" class="cell"></div>
+        <div id="cell-5" class="cell"></div>
+        <div id="cell-6" class="cell"></div>
+        <div id="cell-7" class="cell"></div>
+        <div id="cell-8" class="cell"></div>
+    </div>
+    
+    <div class="prompt">
+        <button id="start-game">START GAME</button>
+    </div>
+    
+    <div class="result hidden">
+        <img id="result-icon" src="" alt="Result Icon">
+        <span id="result-text"></span>
+    </div>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const gameContainer = document.querySelector('.game-container');
+        const prompt = document.querySelector('.prompt');
+        const resultContainer = document.querySelector('.result');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+        const startGameBtn = document.getElementById('start-game');
+
+        let playerSymbol = '';
+        let computerSymbol = '';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'player';
+
+        startGameBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            playerSymbol = prompt('Choose your symbol: Dagger or Heart?').toLowerCase() === 'dagger' ? 'dagger' : 'heart';
+            computerSymbol = playerSymbol === 'dagger' ? 'heart' : 'dagger';
+            prompt.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            currentPlayer = 'player';
+            resetBoard();
+        }
+
+        function resetBoard() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+        }
+
+        function handleClick(event) {
+            const index = Array.from(cells).indexOf(event.target);
+            if (board[index] === '') {
+                board[index] = currentPlayer === 'player' ? playerSymbol : computerSymbol;
+                event.target.textContent = currentPlayer === 'player' ? getSymbolIcon(playerSymbol) : getSymbolIcon(computerSymbol);
+                if (checkWin()) {
+                    endGame(`${currentPlayer === 'player' ? playerSymbol : computerSymbol} wins!`);
+                } else if (board.every(cell => cell !== '')) {
+                    endGame('It\'s a draw!');
+                } else {
+                    currentPlayer = currentPlayer === 'player' ? 'computer' : 'player';
+                    if (currentPlayer === 'computer') {
+                        computerMove();
+                    }
+                }
+            }
+        }
+
+        function computerMove() {
+            let availableCells = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+            let move = availableCells[Math.floor(Math.random() * availableCells.length)];
+            board[move] = computerSymbol;
+            cells[move].textContent = getSymbolIcon(computerSymbol);
+            if (checkWin()) {
+                endGame(`${computerSymbol} wins!`);
+            } else if (board.every(cell => cell !== '')) {
+                endGame('It\'s a draw!');
+            } else {
+                currentPlayer = 'player';
+            }
+        }
+
+        function checkWin() {
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            return winningCombos.some(combo => {
+                return board[combo[0]] && board[combo[0]] === board[combo[1]] && board[combo[1]] === board[combo[2]];
+            });
+        }
+
+        function getSymbolIcon(symbol) {
+            return symbol === 'dagger' ? '🗡️' : '❤️'; // Use a historical fantasy-themed dagger and heart icon
+        }
+
+        function endGame(message) {
+            resultIcon.src = currentPlayer === 'player' ? getSymbolIcon(playerSymbol) : getSymbolIcon(computerSymbol);
+            resultText.textContent = message;
+            resultContainer.classList.remove('hidden');
+            setTimeout(() => {
+                if (confirm('PLAY AGAIN?')) {
+                    resultContainer.classList.add('hidden');
+                    resetBoard();
+                    currentPlayer = 'player';
+                }
+            }, 1000);
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleClick));
+    </script>
+</body>
+</html>
