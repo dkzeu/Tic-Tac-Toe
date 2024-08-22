@@ -1,0 +1,52 @@
+body {
+    background-image: url('gladiator-pit.jpg'); /* Replace with actual image */
+    background-size: cover;
+    font-family: 'MedievalSharp', cursive; /* Use a medieval-style font */
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0.5em 0;
+}
+
+.title {
+    line-height: 1.2em;
+}
+
+.game-container {
+    margin: 0 auto;
+    width: 300px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin: -4px;
+    font-size: 2em;
+    text-align: center;
+    line-height: 100px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+    display: none;
+}
+
+.prompt, .result {
+    margin-top: 20px;
+}
+
+.result img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.result span {
+    font-size: 1.5em;
+    font-weight: bold;
+}
